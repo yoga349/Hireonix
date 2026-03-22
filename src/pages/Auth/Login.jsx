@@ -9,6 +9,7 @@ import {
   AlertCircle,
   CheckCircle
 } from 'lucide-react'
+import { validateEmail } from '../utils/helper';
 
 const Login = () => {
      
@@ -18,19 +19,13 @@ const Login = () => {
     rememberMe:false
   })
 
-   const [formState,setFormsState] = useState({
+   const [formState,setFormState] = useState({
     loading:false,
     errors:{},
     showPassword:false,
     success:false
    });
-  //validate email
-   const validateEmail = (email)=>{
-    if(!email.trim()) return 'Email is required';
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if(!emailRegex.test(email)) return 'Please enter a valid email address';
-    return '';
-   }
+ 
   //validate password
    const validatePassword = (password)=>{
    if(!password.trim()) return 'password is required';
@@ -43,7 +38,7 @@ const Login = () => {
       [name]:value
     }));
     if(formState.errors[name]){
-      setFormsState(prev=>({
+      setFormState(prev=>({
         ...prev,
         errors:{...prev.errors,[name]:""}
       }));
@@ -58,7 +53,7 @@ const Login = () => {
     Object.keys(errors).forEach(key =>{
       if(!errors[key]) delete errors[key];
     });
-    setFormsState(prev=>({...prev,errors}));
+    setFormState(prev=>({...prev,errors}));
     return Object.keys(errors).length === 0;
    };
 
@@ -66,15 +61,15 @@ const Login = () => {
     e.preventDefault();
     if(!validateForm()) return;
 
-    setFormsState(prev=>({...prev,loading:true}));
+    setFormState(prev=>({...prev,loading:true}));
 
     
        try {
     // simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
 
-    // ✅ THIS IS THE KEY LINE
-    setFormsState(prev => ({
+     // THIS IS THE KEY LINE
+    setFormState(prev => ({
       ...prev,
       loading: false,
       success: true,
@@ -82,7 +77,7 @@ const Login = () => {
     }));
 
     } catch(error){
-      setFormsState(prev=>({
+      setFormState(prev=>({
         ...prev,
         loading:false,
         errors:{
@@ -171,7 +166,6 @@ const Login = () => {
 
         <div className="relative mt-2">
           <Mail className="absolute left-3 top-3 text-gray-400" size={18} />
-
           <input
             type="email"
             name="email"
@@ -213,7 +207,7 @@ const Login = () => {
           <button
             type="button"
             onClick={() =>
-              setFormsState(prev => ({
+              setFormState(prev => ({
                 ...prev,
                 showPassword: !prev.showPassword
               }))
