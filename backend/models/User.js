@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema({
     name:{type:String,required:true},
@@ -13,15 +13,15 @@ const userSchema = new mongoose.Schema({
     companyName:String,
     companyDescription:String,
     companyLogo:String,
-},{timestamps:true}
+},
+{timestamps:true}
 );
 
 //Encrypt password before save
 
-userSchema.pre("save",async function(next){
-    if(!this.isModified("password")) return next();
-    this.password = await bcrypt.hash(this.password,10);
-    next();
+userSchema.pre("save", async function () {
+    if (!this.isModified("password")) return;
+    this.password = await bcrypt.hash(this.password, 10);
 });
 
 //Match entered password
