@@ -5,6 +5,8 @@ import connectDB from "./config/db.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/authRoutes.js"
+import userRoutes from "./routes/userRoutes.js";
+
 dotenv.config();
 
 const app = express();
@@ -28,13 +30,12 @@ app.use(
 connectDB();
 //Routes
 app.use("/api/auth",authRoutes);
+app.use("/api/user",userRoutes);
 // Static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Test route
-app.get("/", (req, res) => {
-    res.send("server is working");
-});
+
+
 
 // Server
 const port = process.env.PORT || 2000;

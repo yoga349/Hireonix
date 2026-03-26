@@ -14,12 +14,21 @@ export const protect = async (req, res, next) => {
 
       // 3. Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
+      console.log("DECODED:", decoded);
       // 4. Get user from DB (excluding password)
       req.user = await User.findById(decoded.userId).select("-password");
-
+      console.log("USER FROM DB:", user);
       // 5. Move to next function
       next();
+      console.log("AUTH HEADER:", req.headers.authorization);
+
+
+
+
+
+
+
+req.user = user;
 
     } catch (error) {
       res.status(401).json({ message: "Not authorized, token failed" });
