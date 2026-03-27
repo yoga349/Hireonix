@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { application } from 'express';
 import dotenv from 'dotenv';
 import cors from "cors";
 import connectDB from "./config/db.js";
@@ -6,7 +6,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/authRoutes.js"
 import userRoutes from "./routes/userRoutes.js";
-
+import jobRoutes from "./routes/jobRoutes.js";
+import applicationRoutes from "./routes/applicationRoutes.js"
 dotenv.config();
 
 const app = express();
@@ -31,6 +32,8 @@ connectDB();
 //Routes
 app.use("/api/auth",authRoutes);
 app.use("/api/user",userRoutes);
+app.use("/api/jobs",jobRoutes);
+app.use("/api/applications",applicationRoutes);
 // Static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
