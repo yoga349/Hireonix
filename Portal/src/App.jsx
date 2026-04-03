@@ -18,11 +18,12 @@ import JobPostingForm from "./pages/Employer/JobPostingForm";
 import EmployerProfilePage from "./pages/Employer/EmployerProfilePage";
 import UserProfile from "./pages/JobSeeker/UserProfile";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext";
 
 
 const App = () =>{
   return (
-    <div>
+    <AuthProvider>
       <Router>
         <Routes>
           {/* routes for Users */}
@@ -56,7 +57,7 @@ const App = () =>{
         },
       }}
       />
-    </div>
+    </AuthProvider>
   )
 }
 

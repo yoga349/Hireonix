@@ -10,9 +10,16 @@ import {
   CheckCircle
 } from 'lucide-react'
 import { validateEmail } from '../utils/helper';
+import { useAuth } from '../../context/AuthContext';
+import { validatePassword } from '../utils/helper';
+import { API_PATHS } from '../utils/apiPaths';
+import axiosInstance from '../utils/axiosinstance';
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-     
+  const {login} = useAuth();
+          const navigate = useNavigate();
+
   const [formData,setFormData] = useState({
     email:'',
     password:'',
@@ -59,20 +66,26 @@ const Login = () => {
 
     setFormState(prev=>({...prev,loading:true}));
 
-    
-       try {
-    // simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+  const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+    email: formData.email,
+    password: formData.password,
+    rememberMe: formData.rememberMe
+  });
 
-     // THIS IS THE KEY LINE
-    setFormState(prev => ({
-      ...prev,
-      loading: false,
-      success: true,
-      errors: {}
-    }));
+  const { token, role, ...user } = response.data;
 
-    } catch(error){
+  if (token) {
+    login(user, token);
+
+    navigate(
+      role === "employer"
+        ? "/employer-dashboard"
+        : "/find-jobs"
+    );
+  }
+
+} catch(error){
       setFormState(prev=>({
         ...prev,
         loading:false,
@@ -194,7 +207,7 @@ const Login = () => {
             name="password"
             value={formData.password}
             onChange={handleInputChange}
-            className={`w-full pl-10 pr-10 py-3 rounded-xl bg-white/20 text-white placeholder-gray-300 border ${
+            className={`w-full pl-10 pr-12 py-3 rounded-xl bg-white/20 text-white placeholder-gray-300 border ${
               formState.errors.password ? "border-red-400" : "border-white/20"
             } focus:ring-2 focus:ring-purple-400 outline-none transition`}
             placeholder="Enter your password"
