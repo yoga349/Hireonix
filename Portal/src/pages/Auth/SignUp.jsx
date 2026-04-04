@@ -9,7 +9,6 @@ import {
   EyeOff,
   UserCheck,
   Building2,
-  CheckCircle,
   AlertCircle,
   Loader,
 } from "lucide-react";
@@ -18,8 +17,14 @@ import {
   validateEmail,
   validatePassword,
 } from "../utils/helper";
-
+import axiosInstance from "../utils/axiosinstance";
+import { API_PATHS } from "../utils/apiPaths";
+import { useNavigate } from "react-router-dom";
+import uploadImage from "../utils/uploadImage";
+import { useAuth } from "../../context/AuthContext";
 const SignUp = () => {
+  const {login} = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -108,7 +113,44 @@ const SignUp = () => {
     e.preventDefault();
     if (!validateForm()) return;
     setFormState((prev) => ({ ...prev, loading: true }));
+
     try {
+      let avatarUrl = "";
+
+      //Upload image if present
+      if(formData.avatar){
+        const imgUploadRes = await uploadImage(formData.avatar);
+        avatarUrl = imgUploadRes.imageUrl || "";
+      }
+      const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER,{
+        name:formData.fullName,
+        email:formData.email,
+        password:formData.password,
+        role:formData.role,
+        avatar:avatarUrl || "",
+      });
+
+      //Handle successful registration 
+      setFormState((prev)=>({
+        ...prev,
+        loading:false,
+        success:true,
+        errors:{},
+      }));
+
+      const {token,...user} = response.data;
+
+      if(token){
+        login(user,token);
+
+        //Redirecting based on role
+       navigate(
+      formData.role === "employer"
+        ? "/employer-dashboard"
+        : "/find-jobs"
+    );
+  
+      }
     } catch (error) {
       console.log("error", error);
 
@@ -124,44 +166,7 @@ const SignUp = () => {
     }
   };
 
-  if (formState.success) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 relative overflow-hidden">
-        {/* Background Glow */}
-        <div className="absolute w-72 h-72 bg-green-400 opacity-30 blur-3xl rounded-full top-10 left-10"></div>
-        <div className="absolute w-72 h-72 bg-blue-400 opacity-30 blur-3xl rounded-full bottom-10 right-10"></div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.85, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="bg-white/10 backdrop-blur-xl border border-white/20 p-10 rounded-3xl shadow-2xl text-center w-[360px]"
-        >
-          {/* Icon */}
-          <div className="flex justify-center mb-5">
-            <div className="bg-green-500/20 p-4 rounded-full">
-              <CheckCircle className="text-green-400" size={40} />
-            </div>
-          </div>
-
-          {/* Title */}
-          <h2 className="text-2xl font-bold text-white mb-2">
-            Account Created!
-          </h2>
-
-          {/* Message */}
-          <p className="text-gray-200 text-sm mb-6">
-            Welcome to Hireonix! Your account has been successfully created.
-          </p>
-          {/* Redirect text */}
-          <div className="flex items-center justify-center gap-2 text-gray-300 text-sm">
-            <Loader className="animate-spin" size={16} />
-            Redirecting to your dashboard...
-          </div>
-        </motion.div>
-      </div>
-    );
-  }
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-indigo-900 to-black px-4">

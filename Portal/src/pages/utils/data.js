@@ -1,3 +1,5 @@
+import { Briefcase, Building2,BriefcaseBusiness ,LayoutDashboard,ClipboardList , Plus } from "lucide-react";
+
 // 🔐 User Roles
 export const USER_ROLES = [
   { label: "Job Seeker", value: "jobseeker" },
@@ -12,6 +14,14 @@ export const APPLICATION_STATUS = [
   { label: "Rejected", value: "rejected" },
 ];
 
+// 🧭 Navigation Menu
+export const NAVIGATION_MENU = [
+  { id: "employer-dashboard", name: "Dashboard", icon: LayoutDashboard },
+  { id: "post-job", name: "Post Job", icon: Plus  },
+  { id: "manage-jobs", name: "Manage Jobs", icon: BriefcaseBusiness  },
+  { id: "company-profile", name: "Company Profile", icon: Building2 },
+];
+
 // 💼 Job Types
 export const JOB_TYPES = [
   { label: "Full Time", value: "full-time" },
@@ -20,7 +30,7 @@ export const JOB_TYPES = [
   { label: "Remote", value: "remote" },
 ];
 
-// 📍 Locations (example)
+// 📍 Locations
 export const JOB_LOCATIONS = [
   "Pune",
   "Mumbai",
@@ -42,7 +52,7 @@ export const SORT_OPTIONS = [
   { label: "Oldest First", value: "oldest" },
 ];
 
-// 🔍 Job Categories (optional)
+// 🔍 Job Categories
 export const JOB_CATEGORIES = [
   "Frontend Developer",
   "Backend Developer",

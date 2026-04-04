@@ -1,9 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
 
 const Header = () => {
-  const isAuthenticated = true;
-  const user = { fullName: "Monish", role: "employer" };
+  
+  const {user,isAuthenticated,loading} = useAuth();
   const navigate = useNavigate();
 
   return (
@@ -45,7 +46,7 @@ const Header = () => {
         {isAuthenticated ? (
           <>
             <span className="hidden md:block">
-              Welcome, <b>{user?.fullName}</b>
+              Welcome, <b>{user?.name}</b>
             </span>
 
             <button

@@ -1,9 +1,10 @@
 import React from 'react'
 import {useNavigate} from 'react-router-dom'
+import { useAuth } from '../../../context/AuthContext';
 const Hero = () => {
-    const isAuthenticated = true;
-    const user = { fullName: "Monish", role: "employer" };
+    const {user,isAuthenticated,loading} = useAuth();
     const navigate = useNavigate();
+    
   return (
     <section className="bg-gradient-to-r from-blue-50 to-indigo-100 py-24 px-6">
 

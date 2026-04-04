@@ -98,49 +98,7 @@ const Login = () => {
    };
 
 
-   if (formState.success) {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 relative overflow-hidden">
-
-      {/* Background Glow */}
-      <div className="absolute w-72 h-72 bg-green-400 opacity-30 blur-3xl rounded-full top-10 left-10"></div>
-      <div className="absolute w-72 h-72 bg-blue-400 opacity-30 blur-3xl rounded-full bottom-10 right-10"></div>
-
-      <motion.div
-        initial={{ opacity: 0, scale: 0.85, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="bg-white/10 backdrop-blur-xl border border-white/20 p-10 rounded-3xl shadow-2xl text-center w-[360px]"
-      >
-
-        {/* Icon */}
-        <div className="flex justify-center mb-5">
-          <div className="bg-green-500/20 p-4 rounded-full">
-            <CheckCircle className="text-green-400" size={40} />
-          </div>
-        </div>
-
-        {/* Title */}
-        <h2 className="text-2xl font-bold text-white mb-2">
-          Welcome Back 🎉
-        </h2>
-
-        {/* Message */}
-        <p className="text-gray-200 text-sm mb-6">
-          You have been successfully logged in.
-        </p>
-
-        {/* Redirect text */}
-        <div className="flex items-center justify-center gap-2 text-gray-300 text-sm">
-          <Loader className="animate-spin" size={16} />
-          Redirecting to your dashboard...
-        </div>
-
-
-      </motion.div>
-    </div>
-  );
-}
+   
 
   return (
     
